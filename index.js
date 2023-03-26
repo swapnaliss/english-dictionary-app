@@ -16,14 +16,24 @@ const fetchAPI = async (word) => {
         const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
         const result = await fetch(url).then((response) => response.json());
 
-        infoTextEl.style.display = "none";
-        meaningContainerEl.style.display = "block";
-        titleEl.innerText = result[0].word;
-        meaningEl.innerText = result[0].meanings[0].definitions[0].definition;
-        audioEl.src = result[0].phonetics[0].audio;
-
+        if (result.title) {
+            infoTextEl.style.display = "none";
+            meaningContainerEl.style.display = "block";
+            titleEl.innerText = word;
+            meaningEl.innerText = "N/A"
+            audioEl.src = "none"
+        }
+        else {
+            infoTextEl.style.display = "none";
+            meaningContainerEl.style.display = "block";
+            audioEl.style.display = "inline-flex";
+            titleEl.innerText = result[0].word;
+            meaningEl.innerText = result[0].meanings[0].definitions[0].definition;
+            audioEl.src = result[0].phonetics[0].audio;
+        }
     } catch (error) {
         console.log(error);
+        infoTextEl.innerText = `an error happened, try again later`;
     }
 }
 
